@@ -1,11 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+   {{template "widgets/head.html" .}}
 </head>
 <body>
-    <h3>test</h3>
+    <header>
+        {{template "widgets/header.html" .}}
+    </header>
+
+    <div class="jumbotron">
+        <h1 class="display-4">Welcome</h1>
+        <p class="lead">这是一个简单的图像灰度直方图均衡化与规定化程序</p>
+        <hr class="my-4">
+        <p>它基于Go语言的Beego框架开发，前端使用Boostrap和Vue组件</p>
+        <a class="btn btn-primary btn-lg" href="https://github.com/univana/DIP-big-project" role="button">浏览Github仓库</a>
+      </div>
+
+
+
+
+    <footer>
+        {{template "widgets/footer.html" .}}
+    </footer>
 </body>
 </html>
