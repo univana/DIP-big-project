@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {{template "widgets/head.html" .}}
+</head>
+
+<body>
+    <header>
+        {{template "widgets/header.html" .}}
+    </header>
+
+    <div id="app">
+
+      <h3>test</h3>
+      <img src="{{.uploadFilePath}}" alt="">
+
+
+
+    </div>
+
+
+
+
+    <footer>
+        {{template "widgets/footer.html" .}}
+    </footer>
+    <script type="text/javascript">
+        let app = new Vue({
+            el: '#app',
+            data: {
+                imageUrl:'',
+            },
+            delimiters: ['{[', ']}'],
+            methods: {
+            }
+        });
+    </script>
+</body>
+
+</html>
