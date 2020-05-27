@@ -12,5 +12,5 @@ func init() {
 	beego.Router("/equalize/display", &controllers.MainController{}, "*:EqualizeDisplay")
 
 	//图片上传
-	beego.Router("/api/upload", &controllers.UploadController{}, "post:Upload")
+	beego.Router("/api/upload/:key", &controllers.UploadController{}, "post:Upload")
 }

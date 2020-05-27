@@ -18,6 +18,10 @@ type UploadController struct {
 //Upload :图片上传
 func (c *UploadController) Upload() {
 
+	//key: 上传后申请的操作 均衡化/规格化
+	key := c.Ctx.Input.Param(":key")
+	fmt.Println(key)
+
 	f, info, err := c.GetFile("file")
 
 	if err != nil {
@@ -34,12 +38,26 @@ func (c *UploadController) Upload() {
 	filePath := fmt.Sprintf("static/upload/%s", fileName)
 	c.SaveToFile("file", filePath)
 
-	//解析图片
-	picture := models.NewPicture().Analyse(filePath)
+	switch key {
+	case "equalize":
+		//均衡化
+		//解析原始图片
+		originalPicture := models.NewPicture().Analyse(filePath)
 
-	//设置上传后文件的路径 供前端调用
-	c.Data["Picture"] = picture
+		//进行均衡化
+		source := models.Equalize(originalPicture)
 
-	//跳转到显示结果页面
-	c.TplName = "equalize/display.html"
+		//制作新图像
+		models.MakePicture(source, originalPicture.Bounds, originalPicture.Ext)
+
+		//设置原始图片实例 供前端调用
+		c.Data["OriginalPicture"] = originalPicture
+
+		//跳转到显示结果页面
+		c.TplName = "equalize/display.html"
+	case "specify":
+		//规定化
+
+	}
+
 }

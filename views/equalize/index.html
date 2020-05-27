@@ -11,7 +11,7 @@
 
     <div id="app">
 
-        <form enctype="multipart/form-data" method="post" action="{{urlfor "UploadController.Upload"}}">
+        <form enctype="multipart/form-data" method="post" action="{{urlfor "UploadController.Upload" ":key" "equalize"}}">
             <input type="file" name="file" />
             <input type="submit">
         </form>
