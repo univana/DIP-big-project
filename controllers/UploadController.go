@@ -3,7 +3,9 @@ package controllers
 import (
 	"fmt"
 	"log"
+	"myApp/models"
 	"path"
+	"strings"
 
 	"github.com/astaxie/beego"
 	uuid "github.com/iris-contrib/go.uuid"
@@ -24,16 +26,19 @@ func (c *UploadController) Upload() {
 	defer f.Close()
 
 	//获取文件后缀
-	ext := path.Ext(info.Filename)
+	ext := strings.ToLower(path.Ext(info.Filename))
 
-	//生成文件名
+	//保存图片
 	uuid, _ := uuid.NewV4()
 	fileName := fmt.Sprintf("%s%s", uuid, ext)
-	fmt.Println(fileName)
-	c.SaveToFile("file", "static/upload/"+fileName)
+	filePath := fmt.Sprintf("static/upload/%s", fileName)
+	c.SaveToFile("file", filePath)
+
+	//解析图片
+	picture := models.NewPicture().Analyse(filePath)
 
 	//设置上传后文件的路径 供前端调用
-	c.Data["uploadFilePath"] = fmt.Sprintf("/static/upload/%s", fileName)
+	c.Data["Picture"] = picture
 
 	//跳转到显示结果页面
 	c.TplName = "equalize/display.html"
