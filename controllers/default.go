@@ -21,3 +21,11 @@ func (c *MainController) Equalize() {
 func (c *MainController) EqualizeDisplay() {
 	c.TplName = "equalize/display.html"
 }
+
+func (c *MainController) Specificate() {
+	c.TplName = "specificate/index.html"
+}
+
+func (c *MainController) SpecificateDisplay() {
+	c.TplName = "specificate/display.html"
+}

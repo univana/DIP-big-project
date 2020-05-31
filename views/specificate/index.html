@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<body>
+    {{template "widgets/head.html" .}}
+
+    <header>
+        {{template "widgets/header.html" .}}
+    </header>
+
+    <div id="app">
+        <h3>请上传原始图像</h3>
+
+        <form enctype="multipart/form-data" method="post" action="{{urlfor "UploadController.Upload" ":key" "specificate"}}">
+            <input type="file" name="file" />
+            <input type="submit">
+        </form>
+
+
+    </div>
+
+
+    <footer>
+        {{template "widgets/footer.html" .}}
+    </footer>
+
+
+    <script type="text/javascript">
+        
+
+        let app = new Vue({
+            el: '#app',
+            data: {
+                
+            },
+            delimiters: ['{[', ']}'],
+            methods: {
+                
+            }
+        });
+    </script>
+</body>
+
+</html>

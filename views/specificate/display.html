@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {{template "widgets/head.html" .}}
+
+    <!-- 引入 echarts -->
+    <script src="/static/echarts/echarts.min.js"></script>
+
+    <!-- 引入ElementUI -->
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+</head>
+
+
+<body>
+    <header>
+        {{template "widgets/header.html" .}}
+    </header>
+
+    <div id="app">
+
+        <el-row>
+          <el-col :span="8">
+                <!-- 原始图片 -->
+                <h3>原始图片</h3>
+                <img src="{{.oriPicture.Path}}" alt="">
+          </el-col>
+          <el-col :span="8">
+               <!-- 匹配图片 -->
+               <h3>匹配图片</h3>
+                <img src="{{.matchPicture.Path}}" alt="">
+        </el-col>
+        <el-col :span="8">
+               <!-- 结果图片 -->
+               <h3>结果图片</h3>
+                <img src="{{.resPicture.Path}}" alt="">
+        </el-col>
+        <el-col :span="8">
+             <!-- 图片灰度直方图 -->
+             <div id="main" style="width: 600px;height:400px;"></div>
+        </el-col>
+               
+        </el-row>
+
+        
+       
+
+       
+
+      
+
+
+
+    </div>
+
+
+
+
+    <footer>
+        {{template "widgets/footer.html" .}}
+    </footer>
+    <script type="text/javascript">
+        let app = new Vue({
+            el: '#app',
+            data: {},
+            delimiters: ['{[', ']}'],
+            methods: {}
+        });
+
+        /* Echarts 相关 */
+
+        var xData = [];
+        var yDataOri = [];
+        var yDataRes= [];
+        var yDataMatch=[];
+        for (let i = 0; i < 256; i++) {
+            xData[i] = i;
+        }
+
+        {{range $index ,$element := .oriHistogramData }}
+            yDataOri[{{$index}}] = {{$element}};
+        {{end}}
+
+        {{range $index ,$element := .resHistogramData }}
+            yDataRes[{{$index}}] = {{$element}};
+        {{end}}
+
+        {{range $index ,$element := .matchHistogramData }}
+            yDataMatch[{{$index}}] = {{$element}};
+        {{end}}
+
+
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                text: '灰度直方图'
+            },
+            tooltip: {},
+            legend: {
+                data: ['original','match','result']
+            },
+            xAxis: {
+                data: xData
+            },
+            yAxis: {},
+            series: [
+                {
+                    name: 'original',
+                    type: 'bar',
+                    data: yDataOri
+                },
+                {
+                    name:'match',
+                    type:'bar',
+                    data:yDataMatch
+                },
+                {
+                    name: 'result',
+                    type: 'bar',
+                    data: yDataRes
+                },
+        ]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script>
+</body>
+
+</html>

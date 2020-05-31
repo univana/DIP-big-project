@@ -3,6 +3,9 @@
 
 <head>
     {{template "widgets/head.html" .}}
+
+    <!-- 引入 echarts -->
+    <script src="/static/echarts/echarts.min.js"></script>
 </head>
 
 <body>
@@ -12,8 +15,14 @@
 
     <div id="app">
 
-     
-      <img src="{{.OriginalPicture.Path}}" alt="">
+        <!-- 原始图片 -->
+        <img src="{{.originalPicture.Path}}" alt="">
+
+        <!-- 结果图片 -->
+        <img src="{{.resPicture.Path}}" alt="">
+
+        <!-- 图片灰度直方图 -->
+        <div id="main" style="width: 600px;height:400px;"></div>
 
 
 
@@ -28,13 +37,61 @@
     <script type="text/javascript">
         let app = new Vue({
             el: '#app',
-            data: {
-                imageUrl:'',
-            },
+            data: {},
             delimiters: ['{[', ']}'],
-            methods: {
-            }
+            methods: {}
         });
+
+        /* Echarts 相关 */
+
+        var xData = [];
+        var yDataOri = [];
+        var yDataRes= [];
+        for (let i = 0; i < 256; i++) {
+            xData[i] = i;
+        }
+
+        {{range $index ,$element := .oriHistogramData }}
+            yDataOri[{{$index}}] = {{$element}};
+        {{end}}
+
+        {{range $index ,$element := .resHistogramData }}
+            yDataRes[{{$index}}] = {{$element}};
+        {{end}}
+
+
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                text: '灰度直方图'
+            },
+            tooltip: {},
+            legend: {
+                data: ['original','result']
+            },
+            xAxis: {
+                data: xData
+            },
+            yAxis: {},
+            series: [
+                {
+                    name: 'original',
+                    type: 'bar',
+                    data: yDataOri
+                },
+                {
+                    name: 'result',
+                    type: 'bar',
+                    data: yDataRes
+                }
+        ]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
     </script>
 </body>
 
